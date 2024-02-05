@@ -1,26 +1,43 @@
+cmake_minimum_required(VERSION 3.13)
+# https://github.com/google/oss-policies-info/blob/main/foundational-cxx-support-matrix.md#foundational-c-support
+
+project(sunshine_tests)
+include_directories("${CMAKE_SOURCE_DIR}")
+
 enable_testing()
 
-set(INSTALL_GTEST OFF)
+# Add GoogleTest directory to the project
+set(gtest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/third-party/googletest")
+add_subdirectory("${gtest_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/googletest")
+include_directories("${gtest_SOURCE_DIR}/googletest/include" "${gtest_SOURCE_DIR}")
 
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  # cmake-lint: disable=C0103
+#set(INSTALL_GTEST OFF)
+
+# if windows
+if (WIN32)
+    # For Windows: Prevent overriding the parent project's compiler/linker settings
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  # cmake-lint: disable=C0103
+endif ()
 
 set(TEST_SOURCES
         ${CMAKE_SOURCE_DIR}/tests/main.cpp
         ${CMAKE_SOURCE_DIR}/tests/test_main.cpp
 )
 
-add_executable(sunshine_test ${TEST_SOURCES})
-target_link_libraries(sunshine_test
-        ${SUNSHINE_EXTERNAL_LIBRARIES}
-        ${EXTRA_LIBS}
-        ${SUNSHINE_TARGET_FILES}
-        gtest
-)
-target_compile_definitions(sunshine_test PUBLIC ${SUNSHINE_DEFINITIONS})
-set_target_properties(sunshine_test PROPERTIES CXX_STANDARD 17
-        VERSION ${PROJECT_VERSION}
-        SOVERSION ${PROJECT_VERSION_MAJOR})
-target_compile_options(sunshine_test PRIVATE ${SUNSHINE_COMPILE_OPTIONS})
+set(SUNSHINE_SOURCES
+        ${SUNSHINE_TARGET_FILES})
 
-add_test(NAME sunshine_test COMMAND sunshine_test)
+add_executable(${PROJECT_NAME}
+        ${TEST_SOURCES}
+        ${SUNSHINE_SOURCES})
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
+target_link_libraries(${PROJECT_NAME}
+        ${SUNSHINE_EXTERNAL_LIBRARIES}
+        gtest
+        gtest_main
+        ${PLATFORM_LIBRARIES})
+target_compile_definitions(${PROJECT_NAME} PUBLIC ${SUNSHINE_DEFINITIONS})
+target_compile_options(${PROJECT_NAME} PRIVATE ${SUNSHINE_COMPILE_OPTIONS})
+target_link_options(${PROJECT_NAME} PRIVATE)
+
+add_test(NAME ${PROJECT_NAME} COMMAND sunshine_test)

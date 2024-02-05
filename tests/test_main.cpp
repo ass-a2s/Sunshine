@@ -4,7 +4,7 @@
  */
 
 #include <gtest/gtest.h>
-#include <src/main.h>
+#include "src/main.h"
 
 TEST(MainTestSuite, WriteFileTest) {
   EXPECT_EQ(write_file("write_file_test.txt", "test"), 0);
