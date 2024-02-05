@@ -38,6 +38,9 @@ set(TEST_SOURCES
 set(SUNSHINE_SOURCES
         ${SUNSHINE_TARGET_FILES})
 
+# remove main.cpp from the list of sources
+list(REMOVE_ITEM SUNSHINE_SOURCES ${CMAKE_SOURCE_DIR}/src/main.cpp)
+
 add_executable(${PROJECT_NAME}
         ${TEST_SOURCES}
         ${SUNSHINE_SOURCES})
