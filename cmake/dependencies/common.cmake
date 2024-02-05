@@ -2,6 +2,12 @@
 # this file will also load platform specific dependencies
 
 # submodules
+# testing
+if(BUILD_TESTS)
+    add_subdirectory("${CMAKE_SOURCE_DIR}/third-party/googletest")
+    include_directories("${CMAKE_SOURCE_DIR}/third-party/googletest/include")
+endif()
+
 # moonlight common library
 set(ENET_NO_INSTALL ON CACHE BOOL "Don't install any libraries build for enet")
 add_subdirectory("${CMAKE_SOURCE_DIR}/third-party/moonlight-common-c/enet")

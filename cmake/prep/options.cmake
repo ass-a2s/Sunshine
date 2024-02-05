@@ -1,3 +1,5 @@
+option(BUILD_TESTS "Build tests" ON)
+
 # if this option is set, the build will exit after configuring special package configuration files
 option(SUNSHINE_CONFIGURE_ONLY "Configure special files only, then exit." OFF)
 
