@@ -11,7 +11,18 @@ set(GTEST_SOURCE_DIR "${CMAKE_SOURCE_DIR}/third-party/googletest")
 add_subdirectory("${GTEST_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/googletest")
 include_directories("${GTEST_SOURCE_DIR}/googletest/include" "${GTEST_SOURCE_DIR}")
 
+set(CPACK_COMPONENT_GTEST_DISABLED ON)
+set(CPACK_COMPONENT_GMOCK_DISABLED ON)
+
+#list(REMOVE_ITEM CPACK_COMPONENTS_ALL
+#        "gmock"
+#        "gtest")
+
+#set_target_properties(gtest PROPERTIES EXCLUDE_FROM_ALL TRUE)
+#set_target_properties(gmock PROPERTIES EXCLUDE_FROM_ALL TRUE)
+#
 #set(INSTALL_GTEST OFF)
+#set(INSTALL_GMOCK OFF)
 
 # if windows
 if (WIN32)
