@@ -7,9 +7,9 @@ include_directories("${CMAKE_SOURCE_DIR}")
 enable_testing()
 
 # Add GoogleTest directory to the project
-set(gtest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/third-party/googletest")
-add_subdirectory("${gtest_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/googletest")
-include_directories("${gtest_SOURCE_DIR}/googletest/include" "${gtest_SOURCE_DIR}")
+set(GTEST_SOURCE_DIR "${CMAKE_SOURCE_DIR}/third-party/googletest")
+add_subdirectory("${GTEST_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/googletest")
+include_directories("${GTEST_SOURCE_DIR}/googletest/include" "${GTEST_SOURCE_DIR}")
 
 #set(INSTALL_GTEST OFF)
 
