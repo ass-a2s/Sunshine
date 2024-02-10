@@ -30,10 +30,9 @@ if (WIN32)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)  # cmake-lint: disable=C0103
 endif ()
 
-set(TEST_SOURCES
+file(GLOB_RECURSE TEST_SOURCES
         ${CMAKE_SOURCE_DIR}/tests/main.cpp
-        ${CMAKE_SOURCE_DIR}/tests/test_main.cpp
-)
+        ${CMAKE_SOURCE_DIR}/tests/test_*.cpp)
 
 set(SUNSHINE_SOURCES
         ${SUNSHINE_TARGET_FILES})
