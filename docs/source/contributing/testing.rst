@@ -59,5 +59,14 @@ Format inplace with rstfmt
 
 Unit Testing
 ------------
-.. todo:: Sunshine does not currently have any unit tests. If you would like to help us improve please get in contact
-   with us, or make a PR with suggested changes.
+Sunshine uses `Google Test <https://github.com/google/googletest>`__ for unit testing. Google Test is included in the
+repo as a submodule. The test sources are located in the `./test` directory.
+
+The tests need to be compiled into an executable, and then run. The tests are built using the normal build process, but
+could be disabled by setting the `BUILD_TESTS` CMake option to `OFF`.
+
+To run the tests, execute the following command from the build directory:
+
+.. code-block:: bash
+
+   tests\sunshine_tests.exe --gtest_color=yes
