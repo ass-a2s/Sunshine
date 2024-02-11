@@ -24,6 +24,10 @@ set(CPACK_COMPONENT_GMOCK_DISABLED ON)
 #set(INSTALL_GTEST OFF)
 #set(INSTALL_GMOCK OFF)
 
+# coverage
+set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
+set(CMAKE_C_FLAGS "-fprofile-arcs -ftest-coverage")
+
 # if windows
 if (WIN32)
     # For Windows: Prevent overriding the parent project's compiler/linker settings
