@@ -12,7 +12,7 @@ TEST(FileHandlerTestSuite, WriteFileTest) {
 
 TEST(FileHandlerTestSuite, ReadFileTest) {
   // read file from WriteFileTest
-  EXPECT_EQ(file_handler::read_file("write_file_test.txt"), "test");
+  EXPECT_EQ(file_handler::read_file("write_file_test.txt"), "test\n");
 
   // read missing file
   EXPECT_EQ(file_handler::read_file("non-existing-file.txt"), "");
