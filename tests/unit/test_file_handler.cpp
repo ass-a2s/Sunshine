@@ -6,13 +6,13 @@
 #include <gtest/gtest.h>
 #include <src/file_handler.h>
 
-TEST(FileHandlerTestSuite, WriteFileTest) {
+TEST(FileHandlerTests, WriteFileTest) {
   EXPECT_EQ(file_handler::write_file("write_file_test.txt", "test"), 0);
 }
 
-TEST(FileHandlerTestSuite, ReadFileTest) {
+TEST(FileHandlerTests, ReadFileTest) {
   // read file from WriteFileTest
-  EXPECT_EQ(file_handler::read_file("write_file_test.txt"), "test\n");
+  EXPECT_EQ(file_handler::read_file("write_file_test.txt"), "test\n");  // sunshine adds a newline
 
   // read missing file
   EXPECT_EQ(file_handler::read_file("non-existing-file.txt"), "");

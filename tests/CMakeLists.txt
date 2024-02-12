@@ -36,6 +36,7 @@ endif ()
 
 file(GLOB_RECURSE TEST_SOURCES
         ${CMAKE_SOURCE_DIR}/tests/main.cpp
+        ${CMAKE_SOURCE_DIR}/tests/conftest.cpp
         ${CMAKE_SOURCE_DIR}/tests/test_*.cpp)
 
 set(SUNSHINE_SOURCES
@@ -56,5 +57,31 @@ target_link_libraries(${PROJECT_NAME}
 target_compile_definitions(${PROJECT_NAME} PUBLIC ${SUNSHINE_DEFINITIONS})
 target_compile_options(${PROJECT_NAME} PRIVATE ${SUNSHINE_COMPILE_OPTIONS})
 target_link_options(${PROJECT_NAME} PRIVATE)
+
+# copy repo tree to build target directory
+# this is used for building docs in the tests
+# todo: this is somewhat slow, is there a better way for the tests to access the repo tree?
+file(GLOB_RECURSE ALL_REPO_FILES "${CMAKE_SOURCE_DIR}/*")  # Collect all files in the source directory
+foreach(FILE ${ALL_REPO_FILES})  # Filter out unwanted directories and files
+    string(REGEX MATCH
+            "^${CMAKE_SOURCE_DIR}/(.git.+|.idea|build|build-.+|cmake-.+|docker|gh-pages-template|node_modules|packaging|scripts|tests|third-party|tools|venv)"
+            EXCLUDE_FILE ${FILE})
+    string(REGEX MATCH
+            "^${CMAKE_SOURCE_DIR}/third-party/build-deps"  # todo: match only ffmpeg build for this OS and architecture
+            INCLUDE_FILE ${FILE})
+    if((NOT EXCLUDE_FILE) OR INCLUDE_FILE)
+        list(APPEND INCLUDED_REPO_FILES ${FILE})
+    endif()
+endforeach()
+message("Included repo files: ${INCLUDED_REPO_FILES}")
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD  # Remove the repo directory from the build directory
+        COMMAND ${CMAKE_COMMAND} -E remove_directory "$<TARGET_FILE_DIR:${PROJECT_NAME}>/repo")
+foreach(FILE ${INCLUDED_REPO_FILES})  # Copy the filtered files
+    file(RELATIVE_PATH RELATIVE_FILE ${CMAKE_SOURCE_DIR} ${FILE})
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            ${FILE} "$<TARGET_FILE_DIR:${PROJECT_NAME}>/repo/${RELATIVE_FILE}")
+endforeach()
+message("Destination directory: $<TARGET_FILE_DIR:${PROJECT_NAME}>/repo")
 
 add_test(NAME ${PROJECT_NAME} COMMAND sunshine_test)
